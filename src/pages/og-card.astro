@@ -1,0 +1,83 @@
+---
+// Source for the social preview image (public/og.png, 1200×630).
+// Rendered on the server from the same generator as the feed. Regenerate with `npm run og`.
+import { composeClassic, planeGeometry } from "../lib/classic";
+
+const SEEDS = [1917, 1921, 1930, 1942];
+const works = SEEDS.map((seed) =>
+  composeClassic(seed).planes.map((p) => {
+    const g = planeGeometry(p);
+    return `left:${g.left};top:${g.top};width:${g.width};height:${g.height};background:var(--${p.color})`;
+  }),
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Social Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet" />
+    <style is:global>
+      :root {
+        --line: 12px;
+        --black: #111111;
+        --white: #f4f1ea;
+        --red: #d62718;
+        --blue: #1f3c96;
+        --yellow: #f5c400;
+      }
+      html, body { margin: 0; background: var(--black); }
+      .card {
+        width: 1200px;
+        height: 630px;
+        box-sizing: border-box;
+        padding: var(--line);
+        display: grid;
+        grid-template-columns: 560px 1fr 160px;
+        grid-template-rows: 1fr 1fr;
+        gap: var(--line);
+        font-family: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+      .title {
+        grid-row: span 2;
+        background: var(--white);
+        padding: 44px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .title h1 {
+        margin: 0;
+        font-weight: 900;
+        font-size: 116px;
+        line-height: 0.82;
+        letter-spacing: -0.045em;
+      }
+      .title p {
+        margin: 0;
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .work { position: relative; background: var(--black); }
+      .work div { position: absolute; }
+      .tall { grid-row: span 2; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="title">
+        <p>De Stijl · ∞ compositions</p>
+        <h1>NEO<br />PLAST<br />ICISM</h1>
+      </div>
+      <div class="work">{works[0].map((s) => <div style={s} />)}</div>
+      <div class="work tall">{works[1].map((s) => <div style={s} />)}</div>
+      <div class="work">{works[2].map((s) => <div style={s} />)}</div>
+    </div>
+  </body>
+</html>
