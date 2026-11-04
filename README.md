@@ -2,6 +2,10 @@
 
 An endless De Stijl canvas built with [Astro](https://astro.build). Scroll forever through generated Mondrian-style compositions. Click any one to recompose it.
 
+**Live:** https://dru-o7.github.io/infinite-composition/
+
+![Neoplastic Scroll](public/og.png)
+
 ## Run it
 
 ```sh
