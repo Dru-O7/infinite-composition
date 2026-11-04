@@ -16,15 +16,18 @@ npm run og       # regenerate the social preview image (needs Google Chrome)
 
 - **Click** a work to recompose it. Its lines slide to new positions.
 - **Hover** a work (or tap it on a phone) for buttons to recompose, download a PNG, or copy a link.
-- **Keyboard:** Tab to a work, then:
+- **Keyboard:** shortcuts act on the selected work, or else the one under the mouse, or else the first one on screen.
 
   | Key | Action |
   | --- | --- |
-  | ← ↑ → ↓ | Move between works |
-  | R, Enter or Space | Recompose |
+  | ← ↑ → ↓ | Select a work, then move between works |
+  | R (or Enter / Space on a selected work) | Recompose |
   | D | Download a 2400px PNG |
   | L | Copy a link to this work |
-  | Esc | Leave the grid |
+  | Esc | Deselect |
+
+- **Counter:** the yellow box in the corner counts the works generated so far.
+- **Word cells:** large words from the De Stijl vocabulary (Rhythm, Balance, Line…), labelled with their row number.
 
 - **Share:** `?seed=123456` reproduces a whole feed, row for row. A work's link (`?seed=…&work=boogie-98765-1.50`) shows that work at the top of the page.
 

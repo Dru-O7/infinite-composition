@@ -6,7 +6,7 @@ import type { WorkKind } from "./share";
 export type CellPlan =
   | { kind: WorkKind; span: number; seed: number }
   | { kind: "solid"; span: number; color: "red" | "blue" | "yellow" | "white" }
-  | { kind: "type"; span: number; color: "white" | "yellow" | "blue" | "red" | "black"; word: string };
+  | { kind: "type"; span: number; color: "white" | "yellow" | "blue" | "red"; word: string };
 
 export type RowPlan = { height: number; cells: CellPlan[] };
 
@@ -49,7 +49,8 @@ export function planRow(seed: number): RowPlan {
       cells.push({
         kind: "type",
         span,
-        color: pick(rng, ["white", "white", "yellow", "blue", "red", "black"] as const),
+        // Never black: a black word cell merges with the grid lines and reads as a hole.
+        color: pick(rng, ["white", "white", "yellow", "blue", "red"] as const),
         word: pick(rng, WORDS),
       });
     } else if (!lateUsed && span >= 3 && roll > 1 - LATE_STYLE_CHANCE) {

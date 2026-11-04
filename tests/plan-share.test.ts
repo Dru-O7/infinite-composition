@@ -21,6 +21,10 @@ describe("planRow", () => {
     }
   });
 
+  it("never makes a black word cell, which would merge with the grid lines", () => {
+    for (const r of rows) for (const c of r.cells) if (c.kind === "type") expect(c.color).not.toBe("black");
+  });
+
   it("only puts lozenges in squarish cells", () => {
     for (const r of rows) {
       for (const c of r.cells) if (c.kind === "lozenge") expect(c.span >= 4 && c.span <= 6).toBe(true);

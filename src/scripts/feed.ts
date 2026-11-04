@@ -408,17 +408,48 @@ function move(from: HTMLElement, dir: "left" | "right" | "up" | "down") {
   focusWork(best);
 }
 
+/** The work under the mouse, so shortcuts work without clicking or tabbing first. */
+let hovered: HTMLElement | null = null;
+
+function firstVisibleWork() {
+  return Array.from(document.querySelectorAll<HTMLElement>("[data-work]")).find((el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom > 80 && r.top < window.innerHeight;
+  });
+}
+
+const ARROWS: Record<string, "left" | "right" | "up" | "down"> = {
+  ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down",
+};
+
 function onKeydown(e: KeyboardEvent) {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
-  const el = (e.target as HTMLElement).closest?.<HTMLElement>("[data-work]");
-  const work = el && works.get(el);
-  if (!el || !work) return;
+  const target = e.target as HTMLElement;
+  if (target.closest?.("input, textarea, select, [contenteditable]")) return;
 
-  const arrows: Record<string, "left" | "right" | "up" | "down"> = {
-    ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down",
-  };
   const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-  if (key in arrows) move(el, arrows[key]);
+  const isArrow = key in ARROWS;
+  if (!isArrow && !["Enter", " ", "r", "d", "l", "Escape"].includes(key)) return;
+
+  let el = target.closest?.<HTMLElement>("[data-work]") ?? null;
+  if (!el) {
+    // Nothing selected: Enter/Space/Esc keep their normal meaning (buttons, page scroll).
+    if (key === "Enter" || key === " " || key === "Escape") return;
+    const fromHover = hovered && document.contains(hovered) ? hovered : null;
+    el = fromHover ?? firstVisibleWork() ?? null;
+    if (!el) return;
+    if (isArrow) {
+      // First arrow press selects a work; the next ones move between works.
+      focusWork(el);
+      e.preventDefault();
+      return;
+    }
+    if (!fromHover) focusWork(el); // show which work the shortcut acted on
+  }
+
+  const work = works.get(el);
+  if (!work) return;
+  if (isArrow) move(el, ARROWS[key]);
   else if (key === "Enter" || key === " " || key === "r") recompose(work);
   else if (key === "d") download(work);
   else if (key === "l") copyLink(work);
@@ -485,6 +516,10 @@ export function initFeed() {
   if (shared) renderFeatured(shared, document.querySelector(".masthead")!);
 
   document.addEventListener("keydown", onKeydown);
+  document.addEventListener("pointerover", (e) => {
+    const cell = (e.target as HTMLElement).closest?.(".cell");
+    hovered = cell?.querySelector<HTMLElement>("[data-work]") ?? null;
+  });
   document.addEventListener("click", onClick);
 
   const loadBatch = () => {

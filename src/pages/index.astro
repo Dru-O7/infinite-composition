@@ -3,8 +3,10 @@ import "../styles/global.css";
 
 const title = "Neoplastic Scroll";
 const description = "An endless De Stijl canvas. Scroll forever through generated Mondrian-style compositions.";
-// Social previews need an absolute image URL: set `site` in astro.config.mjs once deployed.
-const ogImage = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
+// Asset paths include the base path (/infinite-composition/ on GitHub Pages).
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+// Social previews need an absolute image URL, built from `site` in astro.config.mjs.
+const ogImage = Astro.site ? new URL(`${base}og.png`, Astro.site).href : `${base}og.png`;
 ---
 
 <!doctype html>
@@ -12,8 +14,8 @@ const ogImage = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
     <meta name="theme-color" content="#111111" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -53,7 +55,7 @@ const ogImage = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
           </div>
           <div class="c-blue"></div>
           <div class="c-white small-note">
-            <span>Click a work to recompose it.<br />Tab to a work, then use <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> to move, <kbd>R</kbd> to recompose, <kbd>D</kbd> to download and <kbd>L</kbd> to copy a link.</span>
+            <span>Click a work to recompose it. Point at a work and press <kbd>R</kbd> to recompose, <kbd>D</kbd> to download or <kbd>L</kbd> to copy a link. <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> move between works.</span>
           </div>
         </div>
       </header>
@@ -69,8 +71,8 @@ const ogImage = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
       </div>
     </main>
 
-    <aside class="counter" aria-label="Compositions loaded">
-      <span class="counter-label">No.</span>
+    <aside class="counter" aria-label="Works generated so far" title="Works generated so far">
+      <span class="counter-label">Works</span>
       <span id="count">0</span>
     </aside>
 
