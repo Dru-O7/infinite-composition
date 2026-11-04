@@ -1,0 +1,61 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#111111" />
+    <title>Neoplastic Scroll</title>
+    <meta name="description" content="An endless De Stijl composition — scroll forever." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="canvas">
+      <!-- Masthead: itself a neoplastic grid -->
+      <header class="row masthead" style="--h: clamp(280px, 52vh, 520px)">
+        <div class="cell span-7 c-white title">
+          <h1>NEO<br />PLAST<br />ICISM</h1>
+        </div>
+        <div class="cell span-2 c-red"></div>
+        <div class="cell span-3 stack">
+          <div class="c-white meta">
+            <span>De Stijl</span>
+            <span>∞ Compositions</span>
+          </div>
+          <div class="c-blue"></div>
+          <div class="c-white small-note">Scroll ↓<br />Click any work to recompose</div>
+        </div>
+      </header>
+
+      <section id="feed" aria-live="polite"></section>
+
+      <div id="sentinel" class="row loader" style="--h: 120px">
+        <div class="cell span-12 c-white loader-cell">
+          <span class="dot c-red"></span>
+          <span class="dot c-yellow"></span>
+          <span class="dot c-blue"></span>
+        </div>
+      </div>
+    </main>
+
+    <aside class="counter" aria-label="Compositions loaded">
+      <span class="counter-label">No.</span>
+      <span id="count">0</span>
+    </aside>
+
+    <script>
+      import { initFeed } from "../scripts/feed";
+      initFeed();
+    </script>
+  </body>
+</html>
