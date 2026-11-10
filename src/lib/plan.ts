@@ -64,3 +64,25 @@ export function planRow(seed: number): RowPlan {
   }
   return { height, cells };
 }
+
+/** Base width of a 12-column span on the 6-column mobile grid. */
+const mobileBase = (span: number) => (span >= 7 ? 6 : span >= 4 ? 4 : 2);
+
+/**
+ * Spans for the 6-column mobile grid. Cells keep their relative size, but every visual line is
+ * filled exactly: when the next cell would wrap, the last cell on the line stretches to the edge,
+ * so no empty (black, unclickable) gaps are left at the end of a line.
+ */
+export function mobileSpans(spans: readonly number[]): number[] {
+  const out = spans.map(mobileBase);
+  let used = 0;
+  for (let i = 0; i < out.length; i++) {
+    if (used + out[i] > 6) {
+      out[i - 1] += 6 - used;
+      used = 0;
+    }
+    used += out[i];
+  }
+  if (used < 6) out[out.length - 1] += 6 - used;
+  return out;
+}

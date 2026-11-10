@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isWork, planRow } from "../src/lib/plan";
+import { isWork, mobileSpans, planRow, ROW_PATTERNS } from "../src/lib/plan";
 import { hash, mulberry32, nextSeed } from "../src/lib/rng";
 import { buildUrl, formatWork, parseSeed, parseWork } from "../src/lib/share";
 
@@ -83,5 +83,33 @@ describe("share links", () => {
     expect(buildUrl(href, { seed: 7, work: { kind: "lozenge", seed: 3, aspect: 1 } })).toBe(
       "https://example.com/?seed=7&work=lozenge-3-1.00",
     );
+  });
+});
+
+describe("mobileSpans", () => {
+  // Replays CSS grid auto-placement and checks every line is filled to 6 columns.
+  const lines = (spans: number[]) => {
+    const out: number[] = [];
+    let used = 0;
+    for (const s of spans) {
+      if (used + s > 6) (out.push(used), (used = 0));
+      used += s;
+    }
+    return [...out, used];
+  };
+
+  it("leaves no empty columns on any line for every row pattern", () => {
+    for (const p of ROW_PATTERNS) {
+      const ms = mobileSpans(p);
+      expect(ms.length).toBe(p.length);
+      for (const s of ms) expect(s >= 2 && s <= 6).toBe(true);
+      for (const l of lines(ms)) expect(l).toBe(6);
+    }
+  });
+
+  it("stretches the last cell on a line instead of leaving a gap", () => {
+    expect(mobileSpans([6, 3, 3])).toEqual([4, 2, 6]);
+    expect(mobileSpans([4, 5, 3])).toEqual([6, 4, 2]);
+    expect(mobileSpans([3, 9])).toEqual([6, 6]);
   });
 });

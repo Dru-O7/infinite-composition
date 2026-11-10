@@ -55,7 +55,8 @@ const ogImage = Astro.site ? new URL(`${base}og.png`, Astro.site).href : `${base
           </div>
           <div class="c-blue"></div>
           <div class="c-white small-note">
-            <span>Click a work to recompose it. Point at a work and press <kbd>R</kbd> to recompose, <kbd>D</kbd> to download or <kbd>L</kbd> to copy a link. <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> move between works.</span>
+            <span class="note-touch">Tap a work to open it. Swipe between works, tap again to recompose, and save the ones you like.</span>
+            <span class="note-mouse">Click a work to recompose it. Point at a work and press <kbd>O</kbd> to open, <kbd>R</kbd> recompose, <kbd>S</kbd> save, <kbd>D</kbd> download or <kbd>L</kbd> copy a link. <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> move between works.</span>
           </div>
         </div>
       </header>
@@ -71,10 +72,16 @@ const ogImage = Astro.site ? new URL(`${base}og.png`, Astro.site).href : `${base
       </div>
     </main>
 
-    <aside class="counter" aria-label="Works generated so far" title="Works generated so far">
-      <span class="counter-label">Works</span>
-      <span id="count">0</span>
-    </aside>
+    <div class="dock">
+      <button type="button" class="saved-button" id="open-saved" title="Saved works">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5 2.6 8.1a3.1 3.1 0 0 1 4.4-4.4L8 4.7l1-1a3.1 3.1 0 0 1 4.4 4.4Z" /></svg>
+        <span id="saved-count">0</span>
+      </button>
+      <aside class="counter" aria-label="Works generated so far" title="Works generated so far">
+        <span class="counter-label">Works</span>
+        <span id="count">0</span>
+      </aside>
+    </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
